@@ -617,10 +617,6 @@ def play_game(player:Player):
         else:
             print('Invalid')
 
-# -------------------------
-# Entrypoint
-# -------------------------
-
 def start():
     while True:
         main_menu()
@@ -653,4 +649,5 @@ def start():
 
 if __name__ == '__main__':
     start()
+
 
