@@ -275,9 +275,6 @@ class Shop:
         print('You do not have that item')
         return False
 
-# -------------------------
-# World & Quests
-# -------------------------
 def spawn_enemy_for_location(location:str) -> Enemy:
     if location == 'Forest':
         return Enemy('Goblin', health=40, power=8, loot=[Item('Herb','material',value=2)], exp=15, gold=8)
@@ -656,3 +653,4 @@ def start():
 
 if __name__ == '__main__':
     start()
+
