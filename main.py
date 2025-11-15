@@ -275,6 +275,9 @@ class Shop:
         print('You do not have that item')
         return False
 
+# -------------------------
+# World & Quests
+# -------------------------
 def spawn_enemy_for_location(location:str) -> Enemy:
     if location == 'Forest':
         return Enemy('Goblin', health=40, power=8, loot=[Item('Herb','material',value=2)], exp=15, gold=8)
@@ -418,7 +421,16 @@ def save_to_slot(player:Player, slot:int):
     with open(save_path(slot),'w') as f:
         json.dump(data,f,indent=2)
     print(f'Saved to slot {slot}')
+DAILY_QUESTS = [
+    {"desc": "Defeat 3 Goblins", "reward": 20},
+    {"desc": "Collect 5 Herbs", "reward": 15},
+    {"desc": "Travel to the Cave", "reward": 10},
+]
 
+def give_daily_quest(player: Player):
+    quest = random.choice(DAILY_QUESTS)
+    print(f"New Quest: {quest['desc']} | Reward: {quest['reward']} gold")
+    player.daily_quest = quest
 def load_from_slot(slot:int) -> Optional[Player]:
     pth = save_path(slot)
     if not os.path.exists(pth):
@@ -557,6 +569,19 @@ def story_progression(player:Player):
         print('\nA puzzle opens a passage to the Boss Lair.')
         player.story_progress = 2
 
+# Boss challenge if conditions met
+
+def attempt_boss(player:Player):
+    if player.location != 'Boss Lair' and player.story_progress < 2:
+        print('The way is sealed. You must progress the story to enter the Boss Lair.')
+        return
+    # copy boss for fight
+    boss_copy = Boss(BOSS.name, BOSS.health, BOSS.power, BOSS.phases, loot=BOSS.loot, exp=BOSS.exp, gold=BOSS.gold)
+    boss_battle(player, boss_copy)
+    if boss_copy.health <= 0:
+        print('With the Guardian defeated the world feels at peace... You completed the main story!')
+        player.story_progress = 99
+
 # -------------------------
 # Main Game Loop
 # -------------------------
@@ -604,6 +629,10 @@ def play_game(player:Player):
         else:
             print('Invalid')
 
+# -------------------------
+# Entrypoint
+# -------------------------
+
 def start():
     while True:
         main_menu()
@@ -636,6 +665,3 @@ def start():
 
 if __name__ == '__main__':
     start()
-
-
-
