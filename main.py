@@ -557,19 +557,6 @@ def story_progression(player:Player):
         print('\nA puzzle opens a passage to the Boss Lair.')
         player.story_progress = 2
 
-# Boss challenge if conditions met
-
-def attempt_boss(player:Player):
-    if player.location != 'Boss Lair' and player.story_progress < 2:
-        print('The way is sealed. You must progress the story to enter the Boss Lair.')
-        return
-    # copy boss for fight
-    boss_copy = Boss(BOSS.name, BOSS.health, BOSS.power, BOSS.phases, loot=BOSS.loot, exp=BOSS.exp, gold=BOSS.gold)
-    boss_battle(player, boss_copy)
-    if boss_copy.health <= 0:
-        print('With the Guardian defeated the world feels at peace... You completed the main story!')
-        player.story_progress = 99
-
 # -------------------------
 # Main Game Loop
 # -------------------------
@@ -649,5 +636,6 @@ def start():
 
 if __name__ == '__main__':
     start()
+
 
 
